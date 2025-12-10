@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulaire de Contact</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #response {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Formulaire de Contact</h2>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Votre Nom" required />
+    <input type="email" id="email" placeholder="Votre Email" required />
+    <input type="tel" id="phone" placeholder="Votre Téléphone" required />
+    <textarea id="comment" placeholder="Votre Commentaire" rows="5" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+  <div id="response"></div>
+
+  <script>
+    const API_URL = "VOTRE_URL_API_GATEWAY"; // Remplacez par l'URL d'API Gateway (à obtenir plus tard)
+
+    document.getElementById("contactForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const responseDiv = document.getElementById("response");
+
+      const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        comment: document.getElementById("comment").value
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        responseDiv.innerHTML = "Message envoyé avec succès !";
+        console.log(result);
+      } catch (error) {
+        responseDiv.innerHTML = "Erreur lors de l'envoi.";
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
